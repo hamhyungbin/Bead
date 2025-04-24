@@ -1,1 +1,1 @@
-# bead-asia
+# bead
