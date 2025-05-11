@@ -6,7 +6,7 @@
     </div>
     <div class="calendar-section">
       <div class="calendar-header">
-        <span class="calendar-month">April 2024</span>
+        <span class="calendar-month">{{ calendarMonth }}</span>
         <span class="calendar-arrow">&gt;</span>
       </div>
       <table class="calendar-table">
@@ -18,7 +18,7 @@
         <tbody>
           <tr v-for="(week, i) in calendar" :key="i">
             <td v-for="(day, j) in week" :key="j">
-              <span :class="{ today: day === 16 }">{{ day || '' }}</span>
+              <span :class="{ today: day === date }">{{ day || '' }}</span>
             </td>
           </tr>
         </tbody>
@@ -27,14 +27,13 @@
     <hr class="divider" />
     <h2 class="upcoming-title">Upcoming Events</h2>
     <div class="event-list">
-      <div class="event-card" v-for="i in 2" :key="i">
+      <div class="event-card" v-for="event in upcomingEvents" :key="event.id" @click="goToEvent(event)">
         <div class="event-date">
-          <div>Apr</div>
-          <div class="event-day">17</div>
+          <div>{{ event.date }}</div>
         </div>
         <div class="event-info">
-          <div class="event-title">Event Title</div>
-          <div class="event-location">Event Location</div>
+          <div class="event-title">{{ event.artist }}</div>
+          <div class="event-location">{{ event.place }}</div>
         </div>
       </div>
     </div>
@@ -43,16 +42,76 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-const search = ref('')
-const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
-// 예시용 달력 데이터 (4월)
-const calendar = [
-  [null, 1, 2, 3, 4, 5, 6],
-  [7, 8, 9, 10, 11, 12, 13],
-  [14, 15, 16, 17, 18, 19, 20],
-  [21, 22, 23, 23, 24, 25, 26],
-  [27, 28, 29, 30, null, null, null]
+import { useRouter } from 'vue-router'
+
+// 오늘 날짜 정보
+const today = new Date()
+const year = today.getFullYear()
+const month = today.getMonth() // 0-indexed
+const date = today.getDate()
+
+// 달력용 월 이름
+const monthNames = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
 ]
+const calendarMonth = `${monthNames[month]} ${year}`
+
+// 달력 요일
+const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+
+// 이번 달 달력 데이터 생성
+function getCalendar(year: number, month: number) {
+  const firstDay = new Date(year, month, 1).getDay()
+  const lastDate = new Date(year, month + 1, 0).getDate()
+  const weeks: (number | null)[][] = []
+  let week: (number | null)[] = Array(firstDay).fill(null)
+  for (let d = 1; d <= lastDate; d++) {
+    week.push(d)
+    if (week.length === 7) {
+      weeks.push(week)
+      week = []
+    }
+  }
+  if (week.length) {
+    while (week.length < 7) week.push(null)
+    weeks.push(week)
+  }
+  return weeks
+}
+const calendar = getCalendar(year, month)
+
+// upcomingEvents는 내일/모레 날짜로
+function getFutureDate(offset: number): string {
+  const d = new Date()
+  d.setDate(d.getDate() + offset)
+  const yyyy = d.getFullYear()
+  const mm = String(d.getMonth() + 1).padStart(2, '0')
+  const dd = String(d.getDate()).padStart(2, '0')
+  return `${yyyy}-${mm}-${dd}`
+}
+
+const upcomingEvents = [
+  {
+    id: '1',
+    date: getFutureDate(1),
+    place: 'Loft Studio',
+    artist: 'Emily Johnson'
+  },
+  {
+    id: '2',
+    date: getFutureDate(2),
+    place: 'Harmony Cafe',
+    artist: 'David Kim'
+  }
+]
+
+const router = useRouter()
+function goToEvent(event: { id: string }) {
+  router.push(`/events/${event.id}`)
+}
+
+const search = ref('')
 </script>
 
 <style scoped>

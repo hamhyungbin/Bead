@@ -22,7 +22,6 @@ const routes = [
     path: '/search',
     name: 'search',
     component: () => import('@/views/SearchView.vue'),
-    meta: { requiresAuth: true }
   },
   {
     path: '/events',
@@ -43,19 +42,11 @@ const routes = [
     path: '/spaces',
     name: 'spaces',
     component: () => import('@/views/SpacesView.vue'),
-    meta: { 
-      requiresAuth: true,
-      allowedRoles: ['host']
-    }
   },
   {
     path: '/portfolio',
     name: 'portfolio',
     component: () => import('@/views/PortfolioView.vue'),
-    meta: { 
-      requiresAuth: true,
-      allowedRoles: ['artist']
-    }
   },
   {
     path: '/wishlist',
@@ -88,6 +79,21 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/artists/:id',
+    name: 'ArtistDetail',
+    component: () => import('@/views/ArtistDetailView.vue')
+  },
+  {
+    path: '/places/:id',
+    name: 'PlaceDetail',
+    component: () => import('@/views/PlaceDetailView.vue')
+  },
+  {
+    path: '/events/:id',
+    name: 'EventDetail',
+    component: () => import('@/views/EventDetailView.vue')
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('@/views/NotFoundView.vue')
@@ -106,7 +112,7 @@ router.beforeEach((to, _from, next) => {
   const allowedRoles = to.meta.allowedRoles as string[] | undefined
 
   if (requiresAuth && !authStore.isAuthenticated) {
-    next({ name: 'login', query: { redirect: to.fullPath } })
+    next('/login')
   } else if (requiresGuest && authStore.isAuthenticated) {
     next({ name: 'home' })
   } else if (allowedRoles && !allowedRoles.includes(authStore.userRole || '')) {

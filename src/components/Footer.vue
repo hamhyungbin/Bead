@@ -13,11 +13,11 @@
           <a href="#" class="privacy">Privacy Policy</a>
         </div>
         <div class="footer-company">
-          <div>CJ ENM Co., Ltd  |  CEO : Yoon Sang Hyun</div>
-          <div>Address : (03926) 66, Sangamsan-ro, Mapo-gu, Seoul, Korea</div>
-          <div>Business Registration No. : 106-81-51510  |  Personal Information Manager : Kim Ji Hoon</div>
+          <div>Bead Co., Ltd  |  CEO : Ham Hyungbin</div>
+          <div>Address : South Korea, Seoul</div>
+          <div>Business Registration No. : xxx-xx-xxxxx  |  Personal Information Manager : Cheong Anyong</div>
         </div>
-        <div class="footer-copy">© CJ ENM. All Rights Reserved.</div>
+        <div class="footer-copy">© BEAD. All Rights Reserved.</div>
       </div>
       <div class="footer-right">
         <div class="footer-family">Family Site +</div>

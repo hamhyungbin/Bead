@@ -1,22 +1,34 @@
 <template>
-  <header class="bead-header">
+  <header class="main-header">
     <div class="logo">BEAD</div>
-    <nav>
+    <nav class="main-nav desktop-nav">
       <router-link to="/">Home</router-link>
       <router-link to="/events">Events</router-link>
       <router-link to="/artists">Artists</router-link>
       <router-link to="/places">Places</router-link>
       <router-link to="/community">Community</router-link>
-      <template v-if="user">
-        <span class="user-name">{{ username }}</span>
-        <button @click="logout" class="logout-btn">Log out</button>
-      </template>
-      <router-link v-else to="/login" class="login-link">Log In</router-link>
+      <router-link v-if="!props.user" to="/login" class="login-link">Log In</router-link>
+      <span v-else class="user-name">{{ username }}</span>
+      <button v-if="props.user" class="logout-btn" @click="logout">Log Out</button>
     </nav>
+    <!-- 햄버거 버튼 (모바일에서만 보임) -->
+    <button class="hamburger" @click="showMenu = !showMenu">
+      <span></span><span></span><span></span>
+    </button>
+    <!-- 모바일 메뉴 -->
+    <div class="mobile-menu" v-if="showMenu">
+      <router-link to="/" @click="closeMenu">Home</router-link>
+      <router-link to="/events" @click="closeMenu">Events</router-link>
+      <router-link to="/artists" @click="closeMenu">Artists</router-link>
+      <router-link to="/places" @click="closeMenu">Places</router-link>
+      <router-link to="/community" @click="closeMenu">Community</router-link>
+      <router-link to="/login" @click="closeMenu">Log In</router-link>
+    </div>
   </header>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { computed } from 'vue'
 import { auth } from '@/firebase'
 
@@ -32,15 +44,46 @@ const logout = async () => {
   await auth.signOut()
   emit('logout')
 }
+
+const showMenu = ref(false)
+function closeMenu() {
+  showMenu.value = false
+}
 </script>
 
 <style scoped>
-.bead-header {
+.main-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 32px 60px 0 60px;
-  background: transparent;
+  align-items: center;
+  padding: 2rem 3rem 1rem 3rem;
+  background: #f9f6f1;
+  position: relative;
+}
+.desktop-nav {
+  display: flex;
+  gap: 1.2rem;
+}
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1001;
+}
+.hamburger span {
+  display: block;
+  width: 28px;
+  height: 4px;
+  background: #222;
+  margin: 4px 0;
+  border-radius: 2px;
+  transition: 0.3s;
 }
 .logo {
   font-size: 2.5rem;
@@ -86,5 +129,27 @@ nav a.router-link-active {
   color: #1a2340;
   font-weight: 600;
   cursor: pointer;
+}
+.mobile-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1000;
+  padding: 1.5rem 0;
+  gap: 1.2rem;
+}
+@media (max-width: 900px) {
+  .desktop-nav {
+    display: none;
+  }
+  .hamburger {
+    display: flex;
+  }
 }
 </style>

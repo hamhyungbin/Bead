@@ -5,8 +5,8 @@
         <input type="text" placeholder="Search artists" v-model="search" />
       </div>
       <div class="artists-list">
-        <div class="artist-card" v-for="artist in artists" :key="artist.name">
-          <img :src="artist.img" :alt="artist.name" />
+        <div v-for="artist in artists" :key="artist.id" class="artist-card" @click="goToArtist(artist)">
+          <img src="/person icon.png" alt="artist" />
           <div class="artist-info">
             <div class="artist-name">{{ artist.name }}</div>
             <div class="artist-type">{{ artist.type }}</div>
@@ -18,12 +18,17 @@
   
   <script setup lang="ts">
   import { ref } from 'vue'
+  import { useRouter } from 'vue-router'
   const search = ref('')
+  const router = useRouter()
   const artists = [
-    { name: 'Emily Johnson', type: 'Visual Art', img: '/assets/emily.jpg' },
-    { name: 'David Kim', type: 'Music', img: '/assets/david.jpg' },
-    { name: 'Sarah Lee', type: 'Theater', img: '/assets/sarah.jpg' }
+    { id: 1, name: 'Emily Johnson', type: 'Visual Art', img: '/person icon.png' },
+    { id: 2, name: 'David Kim', type: 'Music', img: '/person icon.png' },
+    { id: 3, name: 'Sarah Lee', type: 'Theater', img: '/person icon.png' }
   ]
+  function goToArtist(artist: any) {
+    router.push(`/artists/${artist.id}`)
+  }
   </script>
   
   <style scoped>

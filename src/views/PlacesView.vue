@@ -5,8 +5,8 @@
         <input type="text" placeholder="Search places" v-model="search" />
       </div>
       <div class="places-list">
-        <div class="place-card" v-for="place in places" :key="place.name">
-          <img :src="place.img" :alt="place.name" />
+        <div class="place-card" v-for="place in places" :key="place.name" @click="goToPlace(place)">
+          <img :src="place.img" alt="place" />
           <div class="place-info">
             <div class="place-name">{{ place.name }}</div>
             <div class="place-location">{{ place.location }}</div>
@@ -18,12 +18,17 @@
   
   <script setup lang="ts">
   import { ref } from 'vue'
+  import { useRouter } from 'vue-router'
   const search = ref('')
   const places = [
-    { name: 'Loft Studio', location: 'Seoul', img: '/assets/loft.jpg' },
-    { name: 'Harmony Cafe', location: 'Busan', img: '/assets/cafe.jpg' },
-    { name: 'Blue Hall', location: 'Incheon', img: '/assets/hall.jpg' }
+    { id: '1', name: 'Loft Studio', location: 'Seoul', img: '/place icon.png' },
+    { id: '2', name: 'Harmony Cafe', location: 'Busan', img: '/place icon.png' },
+    { id: '3', name: 'Blue Hall', location: 'Incheon', img: '/place icon.png' }
   ]
+  const router = useRouter()
+  function goToPlace(place: { id: string }) {
+    router.push(`/places/${place.id}`)
+  }
   </script>
   
   <style scoped>

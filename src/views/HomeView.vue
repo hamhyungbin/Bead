@@ -9,8 +9,8 @@
           <h1>예술과 공간을 연결합니다</h1>
           <h2>Space Meets Art</h2>
           <div class="hero-buttons">
-            <button>Discover Events</button>
-            <button>Find a Space</button>
+            <button @click="goToEvents" class="discover-btn">Discover Event</button>
+            <button @click="goToPlaces" class="find-space-btn">Find a Space</button>
           </div>
         </div>
       </div>
@@ -54,16 +54,25 @@ import float2 from '@/assets/float2.jpg'
 import featured1 from '@/assets/Featured-1.jpg'
 import featured2 from '@/assets/Featured-2.jpg'
 import featured3 from '@/assets/Featured-3.jpg'
+import { useRouter } from 'vue-router'
 
 const floatImgs = [float1, float2]
 const featuredImgs = [featured1, featured2, featured3]
 const currentSlide = ref(0)
+const router = useRouter()
 
 const nextSlide = () => {
   currentSlide.value = (currentSlide.value + 1) % floatImgs.length
 }
 const prevSlide = () => {
   currentSlide.value = (currentSlide.value - 1 + floatImgs.length) % floatImgs.length
+}
+
+function goToEvents() {
+  router.push('/events')
+}
+function goToPlaces() {
+  router.push('/places')
 }
 
 onMounted(() => {
@@ -243,5 +252,106 @@ const currentFloatImg = computed(() => floatImgs[currentSlide.value])
   height: 100%;
   object-fit: cover;
   border-radius: 1rem;
+}
+
+@media (max-width: 900px) {
+  .main-hero,
+  .hero-slider,
+  .hero-img {
+    height: 260px;
+    min-height: 180px;
+    max-height: 320px;
+  }
+  .hero-img {
+    width: 100vw;
+    height: 260px;
+  }
+  .hero-text-overlay {
+    min-width: 0;
+    padding: 1.2rem 0.5rem;
+    font-size: 0.95rem;
+  }
+  .hero-text-overlay h1 {
+    font-size: 1.3rem;
+  }
+  .hero-text-overlay h2 {
+    font-size: 1rem;
+  }
+  .hero-buttons button {
+    margin: 1rem 0.5rem 0 0.5rem;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+  }
+  .about-items {
+    flex-direction: column;
+    gap: 1.2rem;
+    align-items: center;
+  }
+  .about-item {
+    width: 90vw;
+    min-width: 0;
+    padding: 1.2rem 0.5rem;
+  }
+  .about-icon {
+    width: 40px;
+    height: 40px;
+  }
+  .featured-list {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+  .featured-item {
+    width: 90vw;
+    height: 120px;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-page {
+    padding: 0;
+  }
+  .main-hero,
+  .hero-slider,
+  .hero-img {
+    height: 160px;
+    min-height: 120px;
+    max-height: 200px;
+  }
+  .hero-img {
+    width: 100vw;
+    height: 160px;
+  }
+  .hero-text-overlay {
+    padding: 0.7rem 0.2rem;
+    font-size: 0.85rem;
+    border-radius: 0.7rem;
+  }
+  .hero-text-overlay h1 {
+    font-size: 1.1rem;
+  }
+  .hero-text-overlay h2 {
+    font-size: 0.9rem;
+  }
+  .hero-buttons button {
+    margin: 0.7rem 0.2rem 0 0.2rem;
+    padding: 0.5rem 0.7rem;
+    font-size: 0.95rem;
+    border-radius: 1.2rem;
+  }
+  .about-item {
+    width: 98vw;
+    padding: 0.8rem 0.2rem;
+    font-size: 0.95rem;
+  }
+  .about-icon {
+    width: 32px;
+    height: 32px;
+  }
+  .featured-item {
+    width: 98vw;
+    height: 80px;
+  }
 }
 </style> 
