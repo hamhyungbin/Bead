@@ -63,7 +63,7 @@ const event = events.find(e => e.id === eventId)
     <!-- 예매/공연 안내 -->
     <div class="place-booking">
       <div class="price">무료 공연 (BEAD 자체 예매)</div>
-      <button class="book-btn">예매하기</button>
+      <button class="book-btn">예약하기</button>
     </div>
 
     <!-- 공연 설명 -->

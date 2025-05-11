@@ -14,19 +14,19 @@
 
     <!-- 요약 정보 -->
     <div class="place-summary">
-      <div>최대 인원: {{ place.maxGuests }}명 · 침실 {{ place.bedrooms }}개 · 욕실 {{ place.bathrooms }}개</div>
+      <div>최대 공간: {{ place.maxGuests }}명 · {{ place.bedrooms }} 평 · {{ place.bathrooms }} 평 </div>
       <div>★ {{ place.rating }} · 후기 {{ place.reviews.length }}개</div>
     </div>
 
     <!-- 예약/가격 박스 -->
     <div class="place-booking">
-      <div class="price">₩{{ place.price.toLocaleString() }} /박</div>
+      <div class="price">₩{{ place.price.toLocaleString() }} / 1일</div>
       <button class="book-btn">예약하기</button>
     </div>
 
     <!-- 설명 -->
     <div class="place-desc">
-      <h2>숙소 설명</h2>
+      <h2>공간 설명</h2>
       <p>{{ place.desc }}</p>
     </div>
 
@@ -88,7 +88,7 @@ const places = [
     bathrooms: 1,
     price: 90000,
     rating: 4.85,
-    desc: '부산 해운대에 위치한 아늑한 카페형 숙소입니다. 바다 전망이 아름답습니다.',
+    desc: '부산 해운대에 위치한 아늑한 카페입니다. 바다 전망이 아름답습니다.',
     amenities: ['Wi-Fi', '커피머신', '에어컨'],
     reviews: [
       { id: 1, author: '지현', content: '바다 전망이 정말 최고였어요!' }
