@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "@firebasegen/default-connector": "file:dataconnect-generated/js/default-connector",
-    "bootstrap": "^5.3.2",
+    "@vueuse/core": "^13.1.0",
+    "bootstrap": "^5.3.5",
+    "bootstrap-icons": "^1.11.3",
     "bootstrap-vue-3": "^0.3.12",
     "date-fns": "^2.30.0",
     "firebase": "^11.6.0",

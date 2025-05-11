@@ -7,11 +7,9 @@
     
     <!-- Main content area -->
     <div class="main-content" :class="{ 'mobile-view': isMobile }">
-      <router-view v-slot="{ Component }">
-        <transition name="fade" mode="out-in">
-          <component :is="Component" />
-        </transition>
-      </router-view>
+      <Header :user="user" @logout="handleLogout" />
+      <router-view @login="handleLogin" />
+      <Footer />
     </div>
 
     <!-- Mobile navigation -->
@@ -23,13 +21,28 @@
 import { ref, onMounted } from 'vue'
 import MobileNav from '@/components/MobileNav.vue'
 import { useWindowSize } from '@vueuse/core'
+import Footer from '@/components/Footer.vue'
+import Header from '@/components/Header.vue'
+import { auth } from '@/firebase'
+import type { User } from 'firebase/auth'
 
 const { width } = useWindowSize()
 const isMobile = ref(false)
+const user = ref<User | null | undefined>(undefined)
 
 onMounted(() => {
   isMobile.value = width.value <= 768
+  auth.onAuthStateChanged(u => {
+    user.value = u
+  })
 })
+
+function handleLogin(u: User) {
+  user.value = u
+}
+function handleLogout() {
+  user.value = null
+}
 </script>
 
 <style scoped>
@@ -49,17 +62,11 @@ onMounted(() => {
   overflow: hidden;
 }
 
-.background-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .main-content {
   flex: 1;
-  max-width: 768px;
+  max-width: 100%;
   margin: 0 auto;
-  background-color: white;
+  background-color: #f9f6f1;
   min-height: 100vh;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }

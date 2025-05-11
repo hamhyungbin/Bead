@@ -1,22 +1,17 @@
 <template>
   <div class="main-page">
-    <header class="main-header">
-      <div class="logo">BEAD</div>
-      <nav class="main-nav">
-        <a href="#">Home</a>
-        <a href="#">Upcoming Events</a>
-        <a href="#">Artists</a>
-        <a href="#">Places</a>
-        <a href="#" class="login-link">Log In</a>
-      </nav>
-    </header>
     <section class="main-hero">
-      <div class="hero-text">
-        <h1>예술과 공간을 연결합니다</h1>
-        <h2>Space Meets Art</h2>
-        <div class="hero-buttons">
-          <button>Discover Events</button>
-          <button>Find a Space</button>
+      <div class="hero-slider">
+        <button class="arrow left" @click="prevSlide">&#9664;</button>
+        <img :src="currentFloatImg" alt="Main Slide" class="hero-img" />
+        <button class="arrow right" @click="nextSlide">&#9654;</button>
+        <div class="hero-text-overlay">
+          <h1>예술과 공간을 연결합니다</h1>
+          <h2>Space Meets Art</h2>
+          <div class="hero-buttons">
+            <button>Discover Events</button>
+            <button>Find a Space</button>
+          </div>
         </div>
       </div>
     </section>
@@ -24,17 +19,17 @@
       <h2>About BEAD</h2>
       <div class="about-items">
         <div class="about-item">
-          <div class="icon">🎤</div>
+          <img src="@/assets/Artists.png" alt="Artists Icon" class="about-icon" />
           <h3>Artists</h3>
           <p>Independent artists can easily find audiences and venues for their performances.</p>
         </div>
         <div class="about-item">
-          <div class="icon">🖼️</div>
+          <img src="@/assets/Spaces.png" alt="Spaces Icon" class="about-icon" />
           <h3>Spaces</h3>
           <p><em>Unused spaces are utilized for</em> exhibitions and performances.</p>
         </div>
         <div class="about-item">
-          <div class="icon">🤝</div>
+          <img src="@/assets/Community.png" alt="Community Icon" class="about-icon" />
           <h3>Community</h3>
           <p>We foster a vibrant community for both artists and art-lovers.</p>
         </div>
@@ -43,17 +38,42 @@
     <section class="featured">
       <h2>Featured Events/Artists</h2>
       <div class="featured-list">
-        <div class="featured-item"></div>
-        <div class="featured-item"></div>
-        <div class="featured-item"></div>
+        <div class="featured-item"><img :src="featuredImgs[0]" alt="Featured 1" /></div>
+        <div class="featured-item"><img :src="featuredImgs[1]" alt="Featured 2" /></div>
+        <div class="featured-item"><img :src="featuredImgs[2]" alt="Featured 3" /></div>
       </div>
     </section>
-    <Footer />
+    <!-- <LoginModal v-if="showLogin" @close="closeLogin" /> -->
   </div>
 </template>
 
 <script setup lang="ts">
-import Footer from '@/components/Footer.vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
+import float1 from '@/assets/float1.jpg'
+import float2 from '@/assets/float2.jpg'
+import featured1 from '@/assets/Featured-1.jpg'
+import featured2 from '@/assets/Featured-2.jpg'
+import featured3 from '@/assets/Featured-3.jpg'
+
+const floatImgs = [float1, float2]
+const featuredImgs = [featured1, featured2, featured3]
+const currentSlide = ref(0)
+
+const nextSlide = () => {
+  currentSlide.value = (currentSlide.value + 1) % floatImgs.length
+}
+const prevSlide = () => {
+  currentSlide.value = (currentSlide.value - 1 + floatImgs.length) % floatImgs.length
+}
+
+onMounted(() => {
+  // resetTimer()
+})
+onUnmounted(() => {
+  // if (timer) clearInterval(timer)
+})
+
+const currentFloatImg = computed(() => floatImgs[currentSlide.value])
 </script>
 
 <style scoped>
@@ -85,20 +105,76 @@ import Footer from '@/components/Footer.vue'
   font-weight: 500;
 }
 .main-hero {
-  background: url('/hero-bg.jpg') center/cover no-repeat;
-  min-height: 340px;
+  min-height: 400px;
+  width: 100vw;
+  position: relative;
+  background: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.hero-slider {
+  width: 100vw;
+  height: 400px;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  color: #fff;
-  position: relative;
 }
-.hero-text {
+.hero-img {
+  width: 100vw;
+  height: 400px;
+  object-fit: cover;
+  display: block;
+}
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  background: rgba(0,0,0,0.25);
+  border: none;
+  color: #fff;
+  font-size: 2.2rem;
+  padding: 0.2rem 1rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.arrow.left {
+  left: 2vw;
+}
+.arrow.right {
+  right: 2vw;
+}
+.arrow:hover {
+  background: rgba(0,0,0,0.45);
+}
+.hero-text-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background: rgba(0,0,0,0.45);
   padding: 2.5rem 2rem;
   border-radius: 1.5rem;
-  display: inline-block;
+  color: #fff;
+  text-align: center;
+  z-index: 3;
+  min-width: 350px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+.hero-text-overlay h1 {
+  font-size: 2.2rem;
+  margin-bottom: 0.7rem;
+}
+.hero-text-overlay h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1.2rem;
 }
 .hero-buttons button {
   margin: 1.5rem 1rem 0 1rem;
@@ -136,6 +212,12 @@ import Footer from '@/components/Footer.vue'
   font-size: 2.5rem;
   margin-bottom: 1rem;
 }
+.about-icon {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+}
 .featured {
   padding: 2rem 0 3rem 0;
   text-align: center;
@@ -150,6 +232,16 @@ import Footer from '@/components/Footer.vue'
   width: 200px;
   height: 140px;
   background: #222;
+  border-radius: 1rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.featured-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   border-radius: 1rem;
 }
 </style> 
