@@ -20,7 +20,7 @@
 import { computed } from 'vue'
 import { auth } from '@/firebase'
 
-const props = defineProps({ user: Object })
+const props = defineProps<{ user?: Record<string, any> | null }>()
 const emit = defineEmits(['logout'])
 
 const username = computed(() => {
